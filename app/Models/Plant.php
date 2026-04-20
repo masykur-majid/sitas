@@ -13,9 +13,9 @@ class Plant extends Model
         'other_common_name',
         'category_id',
     ];
-
-    /**
-    * @return the category that the plant is belonged to
+    /*
+    *@return object of BelongsTo
+    *
     */
     public function category(): BelongsTo
     {

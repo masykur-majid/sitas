@@ -2,13 +2,12 @@
 
 namespace App\Filament\Resources\SchoolPlants\Schemas;
 
+use App\Models\SchoolPlant;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
-use Filament\Schemas\Components\Flex;
-use Filament\Schemas\Components\Wizard;
-use Filament\Schemas\Components\Wizard\Step;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class SchoolPlantForm
@@ -17,40 +16,51 @@ class SchoolPlantForm
     {
         return $schema
             ->components([
-                Flex::make([
-                    Wizard::make([
-                        Step::make('Data Tanaman')
-                            ->schema([
-                                TextInput::make('plant_number')
-                                    ->required(),
-                                Select::make('plant_id')
-                                    ->relationship('plant', 'common_name')
-                                    ->required(),
-                                FileUpload::make('image')
-                                    ->image()
-                                    ->required(),
-                            ]),
-                        Step::make('Lokasi Tanaman')
-                            ->schema([
-                                Select::make('location_id')
-                                    ->relationship('location', 'location_name')
-                                    ->required(),
-                                Textarea::make('location_detail')
-                                    ->required()
-                                    ->columnSpanFull(),
-                            ]),
-                        Step::make('Kondisi Tanaman')
-                            ->schema([
-                                Select::make('condition_id')
-                                    ->relationship('condition', 'condition_name')
-                                    ->required(),
-                                Textarea::make('condition_detail')
-                                    ->required()
-                                    ->columnSpanFull(),
-                            ])
-                    ])
-                ])
-                ->columnSpanFull()
+                Section::make('Data Satu Tanaman')
+                    ->description('Masukan Informasi umum tentang tanaman')
+                    ->schema([
+                        TextInput::make('plant_number')
+                            ->label('Nomor Tanaman')
+                            ->default(SchoolPlant::generateNextNumber())
+                            ->disabled()
+                            ->dehydrated()
+                            ->required(),
+                        Select::make('plant_id')
+                            ->label('Nama Umum Tanaman')
+                            ->relationship('plant', 'common_name')
+                            ->required(),
+                    ]),
+                Section::make('Lokasi Tanaman')
+                    ->description('Masukan informasi tentang lokasi dari tanaman yang ada di Sekolah')
+                    ->schema([
+                        Select::make('location_id')
+                            ->label('Lokasi Tanaman')
+                            ->relationship('location', 'location_name')
+                            ->required(),
+                        Textarea::make('location_detail')
+                            ->label('informasi detail lokasi tanaman')
+                            ->helperText('masukan informasi tentang lokasi spesifik dari tanaman yang sedang di data, seperti posisi tanaman, tersimpan di wadah apa dll.')
+                            ->required()
+                            ->columnSpanFull(),
+                    ]),
+                Section::make('Kondisi Tanaman')
+                    ->description('Masukan informasi tentang kondisi dari tanaman yang ada di Sekolah')
+                    ->schema([
+                        Select::make('condition_id')
+                            ->relationship('condition', 'condition_name')
+                            ->required(),
+                        Textarea::make('condition_detail')
+                            ->required()
+                            ->columnSpanFull(),
+                    ]),
+                Section::make('Foto Tanaman')
+                    ->description('Upload kondisi foto tanaman terbaru')
+                    ->schema([
+                        FileUpload::make('image')
+                            ->hiddenLabel()
+                            ->image()
+                            ->required(),
+                    ]),
             ]);
     }
 }
