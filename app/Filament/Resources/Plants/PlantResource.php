@@ -11,6 +11,8 @@ use App\Filament\Resources\Plants\Schemas\PlantInfolist;
 use App\Filament\Resources\Plants\Tables\PlantsTable;
 use App\Models\Plant;
 use BackedEnum;
+use UnitEnum;
+use Daljo25\FilamentTablerIcons\Enums\TablerIcon;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -20,8 +22,10 @@ class PlantResource extends Resource
 {
     protected static ?string $model = Plant::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = TablerIcon::Leaf;
+    protected static string|BackedEnum|null $activeNavigationIcon = TablerIcon::Leaf;
 
+    protected static string|UnitEnum|null $navigationGroup = 'Manage Plants Data';
     public static function form(Schema $schema): Schema
     {
         return PlantForm::configure($schema);

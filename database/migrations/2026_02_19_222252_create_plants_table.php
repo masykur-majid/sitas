@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('common_name');
             $table->string('scientific_name');
-            $table->string('other_common_name');
+            $table->string('english_name');
 
             //mendeskripsikan kolom foreign key dengan cara kedua
             $table->foreignId('category_id')->constrained();

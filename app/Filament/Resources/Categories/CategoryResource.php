@@ -2,9 +2,14 @@
 
 namespace App\Filament\Resources\Categories;
 
+use App\Filament\Imports\CategoryImporter;
 use App\Filament\Resources\Categories\Pages\ManageCategories;
 use App\Models\Category;
 use BackedEnum;
+use Filament\Actions\ImportAction;
+use Filament\Notifications\Notification;
+use UnitEnum;
+use Daljo25\FilamentTablerIcons\Enums\TablerIcon;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -22,14 +27,17 @@ class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = TablerIcon::Category;
+    protected static string|UnitEnum|null $navigationGroup = 'Manage Plants Data';
+    protected static string|BackedEnum|null $activeNavigationIcon = TablerIcon::CategoryF;
 
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->components([
                 TextInput::make('category_name')
-                    ->required(),
+                    ->required()
+                    ->unique(),
             ]);
     }
 
@@ -59,8 +67,7 @@ class CategoryResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
             ])
             ->filters([
                 //

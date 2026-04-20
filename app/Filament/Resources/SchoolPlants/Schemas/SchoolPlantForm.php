@@ -28,6 +28,14 @@ class SchoolPlantForm
                         Select::make('plant_id')
                             ->label('Nama Umum Tanaman')
                             ->relationship('plant', 'common_name')
+                            ->required()
+                    ]),
+                Section::make('Foto Tanaman')
+                    ->description('Upload kondisi foto tanaman terbaru')
+                    ->schema([
+                        FileUpload::make('image')
+                            ->hiddenLabel()
+                            ->image()
                             ->required(),
                     ]),
                 Section::make('Lokasi Tanaman')
@@ -48,18 +56,12 @@ class SchoolPlantForm
                     ->schema([
                         Select::make('condition_id')
                             ->relationship('condition', 'condition_name')
-                            ->required(),
+                            ->required()
+                            ->searchable()
+                            ->preload(),
                         Textarea::make('condition_detail')
                             ->required()
                             ->columnSpanFull(),
-                    ]),
-                Section::make('Foto Tanaman')
-                    ->description('Upload kondisi foto tanaman terbaru')
-                    ->schema([
-                        FileUpload::make('image')
-                            ->hiddenLabel()
-                            ->image()
-                            ->required(),
                     ]),
             ]);
     }

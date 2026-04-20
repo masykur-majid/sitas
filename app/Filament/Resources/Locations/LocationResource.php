@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Locations;
 use App\Filament\Resources\Locations\Pages\ManageLocations;
 use App\Models\Location;
 use BackedEnum;
+use UnitEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -23,8 +24,10 @@ class LocationResource extends Resource
 {
     protected static ?string $model = Location::class;
 
-    protected static string|BackedEnum|null $navigationIcon = TablerIcon::Directions;
+    protected static string|BackedEnum|null $navigationIcon = TablerIcon::MapPin;
+    protected static string|BackedEnum|null $activeNavigationIcon = TablerIcon::MapPinF;
 
+    protected static string|UnitEnum|null $navigationGroup = 'Manage Plants Data';
     public static function form(Schema $schema): Schema
     {
         return $schema

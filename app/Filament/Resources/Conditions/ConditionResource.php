@@ -2,9 +2,13 @@
 
 namespace App\Filament\Resources\Conditions;
 
+use App\Filament\Imports\ConditionImporter;
 use App\Filament\Resources\Conditions\Pages\ManageConditions;
 use App\Models\Condition;
 use BackedEnum;
+use Filament\Actions\ImportAction;
+use UnitEnum;
+use Daljo25\FilamentTablerIcons\Enums\TablerIcon;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -17,19 +21,31 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Resources\Pages\ListRecords;
 
 class ConditionResource extends Resource
 {
     protected static ?string $model = Condition::class;
-
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-
+    protected $listeners = ['refreshTable' => '$refresh'];
+    protected static string|BackedEnum|null $navigationIcon = TablerIcon::DeviceHeartMonitor;
+    protected static string|UnitEnum|null $navigationGroup = 'Manage Plants Data';
+    protected static string|BackedEnum|null $activeNavigationIcon = TablerIcon::DeviceHeartMonitorFilled;
+    protected function getHeaderActions(): array
+    {
+        return [
+            ImportAction::make()
+                ->importer(ConditionImporter::class)
+                // This triggers the refresh after import completes
+                ->after(fn ($livewire) => $livewire->dispatch('refresh'))
+        ];
+    }
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->components([
                 TextInput::make('condition_name')
-                    ->required(),
+                    ->required()
+                    ->unique(),
             ]);
     }
 
@@ -59,8 +75,7 @@ class ConditionResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
             ])
             ->filters([
                 //
@@ -74,7 +89,8 @@ class ConditionResource extends Resource
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->poll('3s');
     }
 
     public static function getPages(): array

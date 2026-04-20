@@ -19,9 +19,9 @@ class PlantsTable
                     ->searchable(),
                 TextColumn::make('scientific_name')
                     ->searchable(),
-                TextColumn::make('other_common_name')
+                TextColumn::make('english_name')
                     ->searchable(),
-                TextColumn::make('category.id')
+                TextColumn::make('category.category_name')
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -30,6 +30,7 @@ class PlantsTable
                 TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
+                    ->since()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([

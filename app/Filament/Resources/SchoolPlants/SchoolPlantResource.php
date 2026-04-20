@@ -11,6 +11,8 @@ use App\Filament\Resources\SchoolPlants\Schemas\SchoolPlantInfolist;
 use App\Filament\Resources\SchoolPlants\Tables\SchoolPlantsTable;
 use App\Models\SchoolPlant;
 use BackedEnum;
+use UnitEnum;
+use Daljo25\FilamentTablerIcons\Enums\TablerIcon;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -20,8 +22,10 @@ class SchoolPlantResource extends Resource
 {
     protected static ?string $model = SchoolPlant::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|UnitEnum|null $navigationGroup = 'Manage Plants Data';
 
+    protected static string|BackedEnum|null $navigationIcon = TablerIcon::Plant2;
+    protected static string|BackedEnum|null $activeNavigationIcon = TablerIcon::Plant2;
     public static function form(Schema $schema): Schema
     {
         return SchoolPlantForm::configure($schema);

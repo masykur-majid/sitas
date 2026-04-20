@@ -13,8 +13,8 @@ class PlantInfolist
             ->components([
                 TextEntry::make('common_name'),
                 TextEntry::make('scientific_name'),
-                TextEntry::make('other_common_name'),
-                TextEntry::make('category.id')
+                TextEntry::make('english_name'),
+                TextEntry::make('category.category_name')
                     ->label('Category'),
                 TextEntry::make('created_at')
                     ->dateTime()
